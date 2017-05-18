@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onDragging(float percent) {
+            public void onDragging(float percent, int dx, int total) {
                 tvMenu.setText("比例：" + percent);
             }
         });

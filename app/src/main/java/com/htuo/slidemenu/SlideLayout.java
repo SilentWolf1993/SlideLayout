@@ -228,8 +228,9 @@ public class SlideLayout extends FrameLayout {
         float percent = animViews();
 
         //执行回调
-        if (null != mListener) {
-            mListener.onDragging(percent);
+        //判断mSlideDx > 0 && mSlideDx < mSlideRang，目的是在侧边栏打开或者关闭状态时不再回调onDragging()事件
+        if (mSlideDx > 0 && mSlideDx < mSlideRang && null != mListener) {
+            mListener.onDragging(percent, mSlideDx, mSlideRang);
         }
 
         Status preStatus = mStatus;
@@ -326,6 +327,15 @@ public class SlideLayout extends FrameLayout {
                 ((startR + (int) (fraction * (endR - startR))) << 16) |
                 ((startG + (int) (fraction * (endG - startG))) << 8) |
                 ((startB + (int) (fraction * (endB - startB))));
+    }
+
+    /**
+     * 判断当前状态是否是打开侧边栏状态
+     *
+     * @return 是否已经打开侧边栏
+     */
+    public boolean isOpened() {
+        return mStatus == Status.OPENED;
     }
 
     /**
@@ -576,7 +586,7 @@ public class SlideLayout extends FrameLayout {
          *
          * @param percent 当前拖动的比例
          */
-        void onDragging(float percent);
+        void onDragging(float percent, int dx, int total);
     }
 
     /**
